@@ -3,11 +3,12 @@
 
 template<typename T>
 class Matrix {
- public:
+ private:
   size_t n, m;
   std::vector<std::vector<T>> matrix;
 
-  Matrix(size_t n_, size_t m_, std::vector<std::vector<T>> &matrix_) {
+ public:
+  Matrix(size_t n_, size_t m_, const std::vector<std::vector<T>> &matrix_) {
     n = n_, m = m_;
     for (size_t i = 0; i < n; ++i) {
       std::vector<T> temporary;
@@ -18,8 +19,8 @@ class Matrix {
     }
   }
 
-  Matrix<T> &operator=(const Matrix<int> &matrix_) {
-    if (this->n == matrix_.n && this->m == matrix_.m) {
+  Matrix<T> &operator=(const Matrix<T> &matrix_) {
+    if (this->n == matrix_.n || this->m == matrix_.m) {
       for (size_t i = 0; i < this->n; ++i) {
         for (size_t j = 0; j < this->m; ++j) {
           this->matrix[i][j] = matrix_.matrix[i][j];
@@ -31,8 +32,8 @@ class Matrix {
     return *this;
   }
 
-  Matrix<T> &operator+(const Matrix<int> &matrix_) {
-    if (this->n == matrix_.n && this->m == matrix_.m) {
+  Matrix<T> &operator+(const Matrix<T> &matrix_) {
+    if (this->n == matrix_.n || this->m == matrix_.m) {
       for (size_t i = 0; i < this->n; ++i) {
         for (size_t j = 0; j < this->m; ++j) {
           this->matrix[i][j] += matrix_.matrix[i][j];
@@ -44,8 +45,8 @@ class Matrix {
     return *this;
   }
 
-  Matrix<T> &operator-(const Matrix<int> &matrix_) {
-    if (this->n == matrix_.n && this->m == matrix_.m) {
+  Matrix<T> &operator-(const Matrix<T> &matrix_) {
+    if (this->n == matrix_.n || this->m == matrix_.m) {
       for (size_t i = 0; i < this->n; ++i) {
         for (size_t j = 0; j < this->m; ++j) {
           this->matrix[i][j] -= matrix_.matrix[i][j];
@@ -57,9 +58,9 @@ class Matrix {
     return *this;
   }
 
-  bool operator==(const Matrix<int> &matrix_) {
+  bool operator==(const Matrix<T> &matrix_) {
     bool flag = true;
-    if (this->n == matrix_.n && this->m == matrix_.m) {
+    if (this->n == matrix_.n || this->m == matrix_.m) {
       for (size_t i = 0; i < this->n; ++i) {
         for (size_t j = 0; j < this->m; ++j) {
           if (this->matrix[i][j] != matrix_.matrix[i][j]) {
@@ -163,7 +164,7 @@ class Matrix {
     matrix[n_][m_] = value;
   }
 
-  static Matrix<T>& unitMatrix(size_t n_) {
+  static Matrix<T> &unitMatrix(size_t n_) {
     Matrix<T> matrix_;
     matrix_.n = n_, matrix_.m = n_;
     for (size_t i = 0; i < matrix_.n; ++i) {
@@ -180,7 +181,7 @@ class Matrix {
     return *matrix_;
   }
 
-  static Matrix<T>& zeroMatrix(size_t n_) {
+  static Matrix<T> &zeroMatrix(size_t n_) {
     Matrix<T> matrix_;
     matrix_.n = n_, matrix_.m = n_;
     for (size_t i = 0; i < matrix_.n; ++i) {
@@ -204,40 +205,5 @@ class Matrix {
 };
 
 int main() {
-  size_t n1, m1, n2, m2;
-  std::vector<std::vector<int>> vector1;
-  std::vector<std::vector<int>> vector2;
-  int value;
-  std::cin >> n1 >> m1;
-  std::cin >> n2 >> m2;
-  for (size_t i = 0; i < n1; ++i) {
-    std::vector<int> temporary;
-    for (size_t j = 0; j < m1; ++j) {
-      std::cin >> value;
-      temporary.push_back(value);
-    }
-    vector1.push_back(temporary);
-  }
-  for (size_t i = 0; i < n2; ++i) {
-    std::vector<int> temporary;
-    for (size_t j = 0; j < m2; ++j) {
-      std::cin >> value;
-      temporary.push_back(value);
-    }
-    vector2.push_back(temporary);
-  }
-
-  Matrix<int> matrix1(n1, m1, vector1);
-  Matrix<int> matrix2(n2, m2, vector2);
-//  matrix2 = matrix1;
-//  matrix2 * 2;
-//  matrix1 + matrix2;
-//  matrix1.printMatrix();
-//  matrix2.printMatrix();
-//  if (matrix1 == 1) {
-//    matrix1.printMatrix();
-//  }
-  matrix1 = matrix1 * matrix2;
-  matrix1.printMatrix();
   return 0;
 }
